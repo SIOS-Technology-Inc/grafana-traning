@@ -1,4 +1,4 @@
-# デモ Grafanaダッシュボード作成
+# Grafana はじめてのDashboard作成
 
 ## デモダッシュボードの作成
 
