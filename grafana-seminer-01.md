@@ -125,7 +125,7 @@
         
     ![Untitled](images/Untitled%2011.png)
         
-    
+## おまけ
 ### その他のデータソース
 他にも一般的によく用いられるデータソースとして、以下のようなものが挙げられます。今回は、時系列データに着目せずにダッシュボードの編集方法を中心にデモを行いましたが、Grafanaは時系列データを処理することも得意としているため、インフラ監視、アプリ監視など、時系列データに対するリアルタイム監視ツールとして多く用いられています。
 - Prometheus: オープンソースのシステムおよびサービスのモニタリングおよびアラートングシステムであり、Grafanaでデータをクエリしてグラフやダッシュボードを作成し、リアルタイムのモニタリングを行うことができます。
@@ -148,6 +148,12 @@
         - JavaScriptの可視化ライブラリであるApache EChartを用いた可視化を行える様にするプラグイン
         - Grafana標準で作成できない複雑なグラフもたいてい作成できる
         - [Apache ECharts plugin page](https://grafana.com/grafana/plugins/volkovlabs-echarts-panel/)
-- SIOSブログ・Youtube
+- SIOSブログ・動画
     - [よくわかるGrafana入門【ダッシュボード編①】](https://tech-lab.sios.jp/archives/32819)
     - [よくわかるGrafana入門【ダッシュボード編②】](https://tech-lab.sios.jp/archives/32868)
+    - [【動画公開】<デモ>初心者向け～Grafanaの始め方](https://column.api-ecosystem.sios.jp/visualize/grafana/175/)
+    - [【動画公開】<デモ>Grafanaを使って、Kubernetesデータを可視化しよう](https://column.api-ecosystem.sios.jp/visualize/grafana/254/)
+    - [Grafana Cloud メトリクス：監視すべきメトリクスとベストプラクティスへのガイド](https://column.api-ecosystem.sios.jp/visualize/grafana/321/)
+- お問い合わせ
+    - mail :apisupport@sios.com
+
