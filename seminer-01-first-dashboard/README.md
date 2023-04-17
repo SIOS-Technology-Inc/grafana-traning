@@ -31,7 +31,7 @@
     
     ![create_testdata_datasource.png](images/create_testdata_datasource.png)
     
-    - データソース選択画面で「TestData」というデータソース名が自動で入力されているので、そのまま[Save & test]を押下してデータソースを登録する。
+    - データソース選択画面で「TestData」というデータソース名が自動で入力されているので、「TestData Demo」という名前に変更し、[Save & test]を押下してデータソースを登録する。
     
     ![save_testdata.png](images/save_testdata.png)
     
