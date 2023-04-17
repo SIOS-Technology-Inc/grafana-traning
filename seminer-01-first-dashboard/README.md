@@ -104,6 +104,7 @@
     ![Untitled](images/Untitled%208.png)
     
 - 商品別売上金額割合の円グラフの作成
+ 上記の2グラフと同様に、自分でオプションを設定して円グラフを作成することもできるが、GrafanaのSuggetionsという機能を使用して作成する。
     - まず、Table形式で表示されているパネルの”売上情報”のパネルの右上のメニューから [More] → [Duplicate] でパネルを複製し、編集画面へ移動
     - [Panel options]内でTitleを「商品別売上金額割合」に変更する
     - 右側上部の[Bar chart]をクリックし、タブから[Suggestions]を選択する。すると、おすすめのグラフ形式が表示されるので、その中から円グラフを選択する。
@@ -137,9 +138,6 @@
 
 ### Links
 - プラグイン
-    - Influx DBデータソースの活用例
-        - 時系列データベースを用いたサーバ監視を行うダッシュボードが閲覧可能
-        - [InfluxDBでのサーバ監視](https://play.grafana.org/d/AAy9r_bmk/influxdb-server-monitoring?orgId=1&var-datacenter=America&var-host=server1&var-host=server2&var-summarize=$__auto_interval_summarize)
     - salesforce (顧客管理・営業支援システム)
         - [salesforceプラグインの紹介](https://grafana.com/solutions/salesforce/visualize/)
     - Grafana Infinity datasource plugin
