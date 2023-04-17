@@ -31,9 +31,7 @@
     
     ![create_testdata_datasource.png](images/create_testdata_datasource.png)
     
-    - データソース選択画面で「TestData」というデータソース名が自動で入力されているので、「TestData demo」という名前に変更し、[Save & test]を押下してデータソースを登録する。
-    
-    ![save_testdata.png](images/save_testdata.png)
+    - データソース選択画面で「TestData」というデータソース名が自動で入力されている。これを「TestData demo」という名前に変更し、[Save & test]を押下してデータソースを登録する。
     
     - 登録が正常に完了すると、「Data source is working」と表示される。これで事前準備が完了。    
 
