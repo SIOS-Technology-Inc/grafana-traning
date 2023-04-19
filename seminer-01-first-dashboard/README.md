@@ -44,15 +44,15 @@
         
     ![Untitled](images/sales_table.png)
     
-    1. 日付ごとの売上金額（棒グラフ）
+    2. 日付ごとの売上金額（棒グラフ）
         
     ![Untitled](images/Untitled%202.png)
         
-    2. 商品別売上金額ランキング（棒グラフ）
+    3. 商品別売上金額ランキング（棒グラフ）
         
     ![Untitled](images/Untitled%203.png)
         
-    3. 商品別売上金額割合（円グラフ）
+    4. 商品別売上金額割合（円グラフ）
         
     ![Untitled](images/Untitled%204.png)
         
