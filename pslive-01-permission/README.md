@@ -27,7 +27,7 @@ docker run -d --name=grafana -p 3000:3000 grafana/grafana-enterprise:10.0.3-ubun
     - ユーザー3: sys_admin1
 
 ↓ 今回作成するチーム、ユーザー、ダッシュボード権限の関係図
-<img src="images/デモで実現したい権限概念図.png" width="800">
+<img src="images/デモで実現したい権限概念図.png" width="500">
 
 
 前提として、権限管理の設定は、OrganizationのAdmin Roleを持つユーザーでログインして操作する必要がある。
