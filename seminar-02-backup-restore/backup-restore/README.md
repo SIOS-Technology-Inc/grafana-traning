@@ -67,7 +67,9 @@ sudo systemctl start grafana-server
 7. 起動したGrafanaにブラウザからアクセスする。
 
 ブラウザで、*http://<Grafana用VMのIP or DNS>:3000* にアクセスし、起動したGrafanaがブラウザから正常にアクセスできることを確認する。
+
 ※この際、AzureでVMを建てた場合、NSGの受信ネットワーク規則で3000番を許可する設定を行わないと、ブラウザでのアクセスができないので注意する。
+
 ※また、ここではGrafanaへのログインはしなくて良い。
 
 
