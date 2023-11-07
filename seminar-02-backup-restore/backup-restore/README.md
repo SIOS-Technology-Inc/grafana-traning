@@ -1,5 +1,5 @@
 # バックアップ・リストア
-今回はVM上のGrafanaをバックアップし、別のVMにリストアするデモを行う。
+今回はVM上のPostgreSQLを利用するように設定したGrafanaをバックアップし、別のVMにリストアするデモを行う。
 実際の運用でのバックアップリストアは、データが失われた場合の業務影響が大きい場合、テスト環境または開発環境で正しく行われるかをテストすることが望ましい。
 
 ## 環境準備
@@ -15,7 +15,7 @@
 バックアップ・リストア対象のGrafanaの環境は、Ubuntu上に作成した。
 構成は、一つのUbuntuの上に、PostgreSQLとGrafanaが建っていて、GrafanaがそのPostgreSQLを使用する構成である。
 
-その構成のため、以下の条件を満たすマシンを用意した。
+その構成を実現するため、以下の条件を満たすマシンを用意した。
 - バックアップ・リストア対象のマシン
   - CPU → 2コア
   - メモリ → 8GB
@@ -24,7 +24,7 @@
 
 今回は、再現しやすいようにazure cliを使ってVMを作成した。
 azure cliを使ったVMの操作手順は[こちらのページ](../azurevm-commands/README.md)に示す。
-azure以外の方法でVMを建てても、以下の手順は利用可能。
+azure以外の方法でVMを建てても、その他の以下の手順は利用可能なはずである。（NSG規則の変更等、一部は読み替えが必要。）
 
 ### Grafanaのインストール
 次に、作成したVMの両方に対して、Grafana、PostgreSQLをインストールする。
@@ -62,6 +62,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable grafana-server
 sudo systemctl start grafana-server
 ```
+
+7. 起動したGrafanaにブラウザからアクセスする。
+ブラウザで、*http://<Grafana用VMのIP or DNS>:3000* にアクセスし、起動したGrafanaがブラウザから正常にアクセスできることを確認する。
+※この際、AzureでVMを建てた場合、NSGの受信ネットワーク規則で3000番を許可する設定を行わないと、ブラウザでのアクセスができないので注意する。
+※また、ここではGrafanaへのログインはしなくて良い。
+
 
 ### postgreSQLのインストール
 GrafanaのDBはデフォルトでは 組み込み型のDBであるsqlite3 を使用している。しかし、DBの要件によっては、DBを複数のクライアントで共有したい場合や処理を分散して行いたい場合があり、そのような場合はクライアントサーバー型のDBを使用する。
@@ -191,7 +197,14 @@ sudo systemctl restart grafana-server
 ここまでの手順で、Grafanaが正常に起動すれば、Grafanaで使用するDBをpostgresqlに変更することが完了する。
 
 ### ダッシュボードに変更を加える
-1. Grafanaのデフォルトのデータソースで、ランダムの時系列データが生成されるグラフのパネルを置いた「Test Dashboard」という名前のダッシュボードを作成しておく。
+1. Grafanaにログインする。
+初期管理者ユーザーの情報を使ってログインする。（パスワードの変更が求められるがここではスキップした。）
+
+**ログイン情報**
+- ユーザー名: admin
+- パスワード: admin
+
+2. Grafanaのデフォルトのデータソースで、ランダムの時系列データが生成されるグラフのパネルを置いた「Test Dashboard」という名前のダッシュボードを作成しておく。
   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/24dea527-e29b-45f2-85fc-c23ea5e5b8f1/13fddc64-b88e-42b1-8b45-9414a9b7a61e/Untitled.png)
     
 ### プラグインをインストールする
@@ -199,7 +212,7 @@ sudo systemctl restart grafana-server
   - Apache EChartsプラグイン - パネルの表現を増やすために利用することができる
 
 ## Grafanaのバックアップ
-ここまで、バックアップ対象とリストア対象のVMにともにGrafanとPostgreSQLのインストール、PostgreSQLのユーザーとDB作成を行った上で、バックアップ対象のGrafanaをPostgreSQLに接続し、いくつかの変更を加えた。
+ここまで、バックアップ対象とリストア対象のVMにともにGrafanaとPostgreSQLのインストール、PostgreSQLのユーザーとDB作成を行った上で、バックアップ対象のGrafanaをPostgreSQLに接続し、いくつかの変更を加えた。
 ここから、バックアップ対象のGrafanaに対してバックアップを行っていく。
 
 Grafanaのバックアップ対象は、主に以下の2つである。
@@ -215,7 +228,8 @@ Grafanaのバックアップ対象は、主に以下の2つである。
 1. **Grafana構成ファイルのバックアップ**
 2. **プラグインデータのバックアップ**
 3. **データベースのバックアップ**
-リストアの際にはそれらを圧縮して送信し、リストア用VM内で展開していく。
+
+リストアの際にはこれらを含むディレクトリをを圧縮して送信し、リストア用VM内で展開していく。
 
 ※`/work`のようなバックアップは実際はVMの外部に安全に保存しておくことが望ましいが、今回はデモの簡単化のために同VM内にバックアップを保存する。
 
@@ -226,7 +240,7 @@ Grafanaのバックアップ対象は、主に以下の2つである。
 ### Grafana構成ファイルのバックアップ
 Grafanaを建てる際に変更した可能性があるGrafana構成ファイルをバックアップする。今回だと、`/etc/grafana/grafana.ini` が対象となる。他にも、例えばdatasourceのプロビジョニング設定を行っていた場合だと `/etc/grafana/povisioning/datasources` のバックアップが必要となる。
 
-今回はファイルはコピー、フォルダはtarとかで固めて、リストア先へはscpコマンドとかでデータを転送する。
+今回はファイルはコピー、フォルダはtarなどで固めて、リストア先へはscpコマンドとかでデータを転送する。
 
 1. まず、バックアップ用のディレクトリ `/work` ディレクトリを作成し、権限を変更する。
 ```
@@ -279,17 +293,24 @@ exit
 
 ### ファイルの転送と展開
 1. バックアップ用のVMに、環境準備の[azureの操作]()で作成した秘密鍵を転送
+
   バックアップ用VMからリストア用VMへscpコマンドを使ってバックフォルダ```work```を転送するために準備しておく。
-!!!!コマンドでやる方法を書く!!!!
+  azコマンドを用いて秘密鍵を作成したローカル環境の同ユーザーのHomeディレクトリで、以下のコマンドを打つ。
+  ```
+  # ローカルの秘密鍵を持つユーザーのHomeディレクトリで実行
+  scp -i  .ssh/rg-grafana-seminar-2_key .ssh/rg-grafana-seminar-2_key azureuser@vm-grafana-postgres-backup.eastus.cloudapp.azure.com:/home/azureuser/.ssh/
+  ```
 
 2. バックアップ用VMの /work ディレクトリを tar.gz 形式に圧縮し、権限を変更する。
 ```
+# バックアップ用VMで実行
 sudo tar zcvfp /work/work.tar.gz /work
 sudo chmod 777 /work/work.tar.gz
 ```
 
 3. リストア用のVMにも work ディレクトリを作成し、外部から書き込みができるように権限を変更しておく。
 ```
+# リストア用VMで実行
 sudo mkdir /work
 sudo chmod 777 /work
 sudo chown azureuser:azureuser /work
@@ -297,25 +318,31 @@ sudo chown azureuser:azureuser /work
 
 4. バックアップ用VM側からscpコマンドを実行し、workディレクトリに固めたバックアップをまとめてリストア用VMに送信する
 ```
-sudo scp -i ~/.ssh/rg-grafana-seminar-2_key  /work/work.tar.gz azureuser@20.169.141.155:/work/
+# バックアップ用VMで実行
+sudo scp -i ~/.ssh/rg-grafana-seminar-2_key  /work/work.tar.gz azureuser@vm-grafana-postgres-restore.eastus.cloudapp.azure.com:/work/
 ```
 
 5. リストア用VMでログインし、送信したバックアップファイルを権限を保持して解凍する
 ```
+# リストア用VMで実行
 sudo tar zxvfp /work/work.tar.gz -C /
 ```
 
 6. リストア先VMの設定ファイルを上書きする
 ```
+# リストア用VMで実行
 sudo cp /work/grafana.ini.bak /etc/grafana/grafana.ini
 ```
 
 7. リストア先VMのプラグインフォルダを上書きする
 ```
+# リストア用VMで実行
 sudo cp -rp /work/plugins /var/lib/grafana/
 ```
 
 ### DBの復元
+以降のコマンドは全てリストア用VMで実行する。
+
 1. ユーザーをpostgresユーザーに変更する
 ```
 sudo -i -u postgres
@@ -335,11 +362,11 @@ exit
 ```
 sudo systemctl restart grafana-server
 ```
-ここまでの操作で、リストアが完了するはずである。
+ここまでの操作で、リストアが完了する。
 
 ## リストアの確認
 最後に、リストアが正しく行われたかどうかを確認する。
-1. リストア用VMのGrafanaへアクセス
+1. リストア用VMのGrafanaへブラウザからアクセス
 2. バックアップ用VMに加えたGrafanaへの以下の3つの変更が復元されていることを確認する。
   ①GrafanaがPostgreSQLのDBを使用する設定
   ②ダッシュボードの作成
