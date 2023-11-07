@@ -209,7 +209,7 @@ sudo systemctl restart grafana-server
 - パスワード: admin
 
 2. Grafanaのデフォルトのデータソースで、ランダムの時系列データが生成されるグラフのパネルを置いた「Test Dashboard」という名前のダッシュボードを作成しておく。
-  ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/24dea527-e29b-45f2-85fc-c23ea5e5b8f1/13fddc64-b88e-42b1-8b45-9414a9b7a61e/Untitled.png)
+  ![テストダッシュボードの作成](./images/Create-test-dashboard.png)
     
 ### プラグインをインストールする
 パネル操作により、以下のプラグインをインストールする。
@@ -354,7 +354,7 @@ sudo -i -u postgres
 
 2. grafana_dbにダンプしたデータを復元する
 ```
-	psql grafana_db < /work/grafana_db.bak
+psql grafana_db < /work/grafana_db.bak
 ```
 
 3. postgresユーザーをログアウトする
@@ -377,4 +377,4 @@ sudo systemctl restart grafana-server
   ③プラグインのインストール
   ※①と②については、作成したダッシュボードがリストア済のGrafanaで確認できれば、復元されていると確認できる。
 
-ここまでできれば、バックアップリストアのデモは完了！
+ここまでできれば、バックアップリストアのデモは完了‼
