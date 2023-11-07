@@ -44,6 +44,7 @@ $ sudo apt install --only-upgrade grafana-enterprise=10.0
 ![Alt text](./images/grafana-installed-plugins.png)
 
 すると、今回はv5.1.0と最新版で、プラグインの公式ページによるとDependenciesにGrafana9以上、と書かれているので特にプラグインに対しての更新対応は必要ないとわかる。
+
 ![Alt text](./images/ApacheEChartsPageCapture.png)
 
 今回はプラグインの更新が必要なかった。しかし、利用していたプラグインのバージョンが古く、アップグレードしたGrafanaのバージョンに対応していなかった場合は、アップグレードしたいGarfanaのバージョンに対応したバージョンのプラグインが存在するかどうかを確認し、プラグインを更新する必要がある。さらに、そこでプラグインに対応するバージョンがなかった場合は、Grafanaの更新自体を踏みとどまるか、別の代替プラグインを探す、アップグレードによるプラグインの影響を調べるなどの対応策を取る必要がある。
