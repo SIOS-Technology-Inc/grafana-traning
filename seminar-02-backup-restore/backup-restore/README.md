@@ -214,7 +214,7 @@ sudo systemctl restart grafana-server
 ```
 ここまでの手順で、Grafanaが正常に起動すれば、Grafanaで使用するDBをpostgresqlに変更することが完了する。
 
-アクセス用URL: vm-grafana-postgres-backup.eastus.cloudapp.azure.com:4000
+アクセス用URL: [http://vm-grafana-postgres-backup.eastus.cloudapp.azure.com:4000](http://vm-grafana-postgres-backup.eastus.cloudapp.azure.com:4000)
 
 ### ダッシュボードに変更を加える
 1. Grafanaにログインする。
@@ -241,7 +241,7 @@ Grafanaのバックアップ対象は、主に以下の2つである。
 2. Grafana用のDB
   → Grafanaのダッシュボードの情報や、ユーザーの情報を保管している
 
-特に **1. の OS上のGrafana関連ファイル** に関しては、バックアップするべき範囲が設定やGrafanaの使用法等によって異なるが、これについては、[GrafanaのOS上のフォルダ構成説明ブログ]()を参照し、各自で判断を行って欲しい。
+特に **1. の OS上のGrafana関連ファイル** に関しては、バックアップするべき範囲が設定やGrafanaの使用法等によって異なるが、これについては、[Grafanaのバックアップ・リストアを行う【Grafana運用管理】](https://tech-lab.sios.jp/archives/37846)を参照し、各自で判断を行って欲しい。
 
 今回は、一般的な構成の場合にバックアップするべき情報を対象として、バックアップのデモを行う。
 おおまかな手順は、3つのバックアップ対象 ファイル/フォルダ を、`/work` ディレクトリにまとめて保存する。以下のような手順である。
@@ -311,6 +311,10 @@ exit
 
 以下、リストアの詳細な手順を示す。
 
+0. 事前に、以下のURLにアクセスして、Grafanaが3000番ポートでアクセスでき、ダッシュボードなどの変更が加えられていないことを確認する。
+
+アクセス用URL: [http://vm-grafana-postgres-restore.eastus.cloudapp.azure.com:3000](http://vm-grafana-postgres-restore.eastus.cloudapp.azure.com:3000)
+
 ### ファイルの転送と展開
 1. バックアップ用のVMに、環境準備の[azureの操作](../azurevm-commands/README.md)で作成した秘密鍵を転送
 
@@ -328,9 +332,9 @@ sudo tar zcvfp /work/work.tar.gz /work
 sudo chmod 777 /work/work.tar.gz
 ```
 
-3. リストア用のVMにも work ディレクトリを作成し、外部から書き込みができるように権限を変更しておく。
+3. リストア用のVMにも work ディレクトリを作成し、外部から書き込みができるように権限を変更しておく。（デモ時は作成済）
 ```
-# リストア用VMで実行（デモ時は作成済）
+# リストア用VMで実行
 sudo mkdir /work
 sudo chmod 777 /work
 sudo chown azureuser:azureuser /work
@@ -387,10 +391,13 @@ sudo systemctl restart grafana-server
 ## リストアの確認
 最後に、リストアが正しく行われたかどうかを確認する。
 1. リストア用VMのGrafanaへブラウザからアクセス
+
+アクセス用URL: [http://vm-grafana-postgres-restore.eastus.cloudapp.azure.com:4000](http://vm-grafana-postgres-restore.eastus.cloudapp.azure.com:4000)
+
 2. バックアップ用VMに加えたGrafanaへの以下の3つの変更が復元されていることを確認する。 
-  ①GrafanaがPostgreSQLのDBを使用する設定  
+  ①4000番ポートを使用する設定
   ②ダッシュボードの作成  
   ③プラグインのインストール  
-  ※①と②については、作成したダッシュボードがリストア済のGrafanaで確認できれば、復元されていると確認できる。
+  ※①の設定とともに、GrafanaがPostgreSQLを使用する設定も引き継いでいる。
 
 ここまでできれば、バックアップリストアのデモは完了‼

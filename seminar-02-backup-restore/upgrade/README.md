@@ -24,6 +24,10 @@ Grafanaのバックアップは、[バックアップリストアのデモ手順
 ここでは、aptリポジトリからGrafanaをインストールした場合のアップグレードの手順について解説する。
 他の方法でインストールしたGrafanaのアップグレード方法については、[アップグレードしたいバージョンのドキュメント](https://grafana.com/docs/grafana/latest/upgrade-guide/upgrade-v10.2/)を参照する。
 
+0. 事前にGrafanaにアクセスし、バージョンが9.5.13であることを確認する
+
+アクセス用URL: [http://vm-grafana-postgres-upgrade.eastus.cloudapp.azure.com:3000](http://vm-grafana-postgres-upgrade.eastus.cloudapp.azure.com:3000)
+
 1. 以下のコマンドを実行し、Grafanaをアップグレードする
 
 ※バージョンを指定せず、最新版にアップグレードする場合、バージョンの指定は不要。
@@ -33,6 +37,11 @@ sudo apt-get update
 # Grafanaのアップグレード
 $ sudo apt install --only-upgrade grafana-enterprise=10.0.0
 ```
+
+2. 以下のURLにアクセスし、Grafanaがv10.0.0にアップグレードされたことを確認する
+
+アクセス用URL: [http://vm-grafana-postgres-upgrade.eastus.cloudapp.azure.com:3000](http://vm-grafana-postgres-upgrade.eastus.cloudapp.azure.com:3000)
+
 
 ## プラグインの更新
 プラグインには、Grafanaのバージョンとの対応がある。そのため、プラグインをアップグレードしたGrafanaのバージョンに更新する必要がある。
@@ -59,7 +68,7 @@ Grafanaのアップグレードでは、全てのバージョンにアップグ�
   このドキュメントのTechnical notesという項目に、アップグレードに影響を与える可能性があるこのバージョンのGrafanaの変更と、その対象方法がいくつか示されている。
   - RBACの無効化オプションが削除された
   - ユーザー名とメールアドレスが大文字と小文字を区別しない仕様に変更された
-  - ダッシュボードプレビューの昨日が削除された
+  - ダッシュボードプレビューの機能が削除された
 - [Breaking changes in Grafana v10.0](https://grafana.com/docs/grafana/latest/breaking-changes/breaking-changes-v10-0/)
   このドキュメントには、Grafanaをv10.0にアップグレードする際に注意する必要がある重大な変更について示されている。
   - Angularが非推奨となり、新しいGrafana Cloud スタックではデフォルトでオフになる
@@ -69,6 +78,7 @@ Grafanaのアップグレードでは、全てのバージョンにアップグ�
 
 ドキュメントを確認した結果、今回作成したGrafanaのバージョンをv9.5からv10.0にアップグレードする際に影響が出る部分は特になかった。そのため、特に対処は行わない。
 しかし、これまでの設定や、利用していたプラグインなどによっては、v9.5 → v10.0 のアップグレードでも、問題が生じる場合があるということがわかった。
+
 
 
 ここまでで、アップグレードのデモが完了!!
