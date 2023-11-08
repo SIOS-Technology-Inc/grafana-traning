@@ -1,5 +1,5 @@
 # アップグレード
-今回のデモでは、バックアップリストアのデモを行った際の[こちらの手順](../backup-restore/README.md)の中で作成したUbuntu上にaptリポジトリを使ってインストールしたgrafana-enterprise v9.5.13の環境を、grafana-enterprise v10.0にアップグレードする。
+今回のデモでは、バックアップリストアのデモを行った際の[こちらの手順](../backup-restore/README.md)の中で作成したUbuntu上にaptリポジトリを使ってインストールしたgrafana-enterprise v9.5.13の環境を、grafana-enterprise v10.0.0にアップグレードする。
 
 事前準備として、バックアップリストアでバックアップしたVMと同様に環境をセットアップする。
 
@@ -31,7 +31,7 @@ Grafanaのバックアップは、[バックアップリストアのデモ手順
 # パッケージリストの更新
 sudo apt-get update
 # Grafanaのアップグレード
-$ sudo apt install --only-upgrade grafana-enterprise=10.0
+$ sudo apt install --only-upgrade grafana-enterprise=10.0.0
 ```
 
 ## プラグインの更新
@@ -44,6 +44,7 @@ $ sudo apt install --only-upgrade grafana-enterprise=10.0
 ![Alt text](./images/grafana-installed-plugins.png)
 
 すると、今回はv5.1.0と最新版で、プラグインの公式ページによるとDependenciesにGrafana9以上、と書かれているので特にプラグインに対しての更新対応は必要ないとわかる。
+
 
 ![Alt text](./images/ApacheEChartsPageCapture.png)
 
