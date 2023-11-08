@@ -69,7 +69,7 @@ sudo systemctl start grafana-server
 
 ブラウザで、*http://<Grafana用VMのIP or DNS>:3000* にアクセスし、起動したGrafanaがブラウザから正常にアクセスできることを確認する。
 
-※この際、AzureでVMを建てた場合、NSGの受信ネットワーク規則で3000番を許可する設定を行わないと、ブラウザでのアクセスができないので注意する。
+※この際、AzureでVMを建てた場合、NSGの受信ネットワーク規則で3000番ポートを許可する設定を行わないと、ブラウザでのアクセスができないので注意する。このあと4000番も利用するため、4000番ポートについても同様に設定しておく。
 
 ※また、ここではGrafanaへのログインはしなくて良い。
 
@@ -214,7 +214,7 @@ sudo systemctl restart grafana-server
 ```
 ここまでの手順で、Grafanaが正常に起動すれば、Grafanaで使用するDBをpostgresqlに変更することが完了する。
 
-
+アクセス用URL: vm-grafana-postgres-backup.eastus.cloudapp.azure.com:4000
 
 ### ダッシュボードに変更を加える
 1. Grafanaにログインする。
